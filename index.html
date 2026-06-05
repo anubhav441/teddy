@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeddyJoy | Luxury Teddy Bear Shop</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icons and Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -23,7 +21,6 @@
 </head>
 <body>
 
-    <!-- NAVIGATION BAR -->
     <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-orange-50">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-amber-800 tracking-tight flex items-center gap-2 select-none">
@@ -36,18 +33,17 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!HERO SECTION >
     <header class="py-16 text-center bg-gradient-to-b from-amber-50 to-transparent">
         <h2 class="text-4xl md:text-5xl font-bold text-amber-900 mb-4">Softness You Can Feel</h2>
         <p class="text-amber-700/80 text-lg max-w-lg mx-auto">Hand-stitched with love. Choose your new best friend from our premium collection.</p>
     </header>
 
-    <!-- PRODUCT GRID -->
+    <!PRODUCT GRID >
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="product-grid">
-        <!-- Products will be dynamically loaded here by JavaScript -->
     </main>
 
-    <!-- SLIDE-OUT CART SIDEBAR -->
+    <!SLIDE-OUT CART SIDEBAR >
     <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl z-[60] cart-hidden flex flex-col cart-sidebar">
         <div class="p-6 flex justify-between items-center border-b">
             <div>
@@ -72,7 +68,7 @@
         </div>
     </div>
 
-    <!-- CHECKOUT MODAL -->
+    <!CHECKOUT MODAL>
     <div id="checkout-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-300">
             <h2 class="text-2xl font-bold text-amber-900 mb-2 text-center">Checkout Details</h2>
@@ -103,7 +99,6 @@
     </div>
 
     <script>
-        // Updated Product List with Rupee Pricing
         const products = [
             { id: 1, name: "Classic Brown Bear", price: 1299, img: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?q=80&w=800" },
             { id: 2, name: "Honey Cream Bear", price: 1599, img: "assets/images/honey.png" },
@@ -115,7 +110,7 @@
 
         let cart = [];
 
-        // 1. Initial Render
+        // 1. Initial
         const productGrid = document.getElementById('product-grid');
         products.forEach(product => {
             productGrid.innerHTML += `
@@ -146,7 +141,7 @@
             `;
         });
 
-        // 2. Cart Logic
+        // 2. Cart 
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             const size = document.getElementById(`size-${productId}`).value;
@@ -212,7 +207,7 @@
             updateUI();
         }
 
-        // 3. Navigation/Modal Toggles
+        // 3. Navigation
         function toggleCart(forceOpen = false) {
             const sidebar = document.getElementById('cart-sidebar');
             if (forceOpen) sidebar.classList.remove('cart-hidden');
@@ -228,7 +223,7 @@
             document.getElementById('checkout-modal').classList.add('hidden');
         }
 
-        // 4. Final Checkout Action
+        // 4.Checkout 
         function handleOrder(e) {
             e.preventDefault();
             alert("🧸 Order Success! Your new teddy friends are being packed with care and will arrive soon.");
