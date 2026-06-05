@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeddyJoy | Luxury Teddy Bear Shop</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons and Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #fdfaf8; scroll-behavior: smooth; }
+        .cart-sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cart-hidden { transform: translateX(100%); }
+        .product-card img { height: 320px; width: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover img { transform: scale(1.05); }
+        /* Custom scrollbar for cart */
+        #cart-items::-webkit-scrollbar { width: 4px; }
+        #cart-items::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-orange-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-800 tracking-tight flex items-center gap-2 select-none">
+                <span class="text-3xl">🧸</span> TeddyJoy
+            </h1>
+            <div class="relative cursor-pointer group p-2" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping text-2xl text-amber-900/70"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold border-2 border-white">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="py-16 text-center bg-gradient-to-b from-amber-50 to-transparent">
+        <h2 class="text-4xl md:text-5xl font-bold text-amber-900 mb-4">Softness You Can Feel</h2>
+        <p class="text-amber-700/80 text-lg max-w-lg mx-auto">Hand-stitched with love. Choose your new best friend from our premium collection.</p>
+    </header>
+
+    <!-- PRODUCT GRID -->
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="product-grid">
+        <!-- Products will be dynamically loaded here by JavaScript -->
+    </main>
+
+    <!-- SLIDE-OUT CART SIDEBAR -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl z-[60] cart-hidden flex flex-col cart-sidebar">
+        <div class="p-6 flex justify-between items-center border-b">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Your Basket</h2>
+                <p class="text-[10px] text-amber-600 font-bold uppercase tracking-widest mt-1">Ready for cuddles?</p>
+            </div>
+            <button onclick="toggleCart()" class="text-gray-300 hover:text-amber-600 text-3xl transition-colors">&times;</button>
+        </div>
+        
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4">
+            <!-- Cart items added here -->
+        </div>
+
+        <div class="p-6 bg-amber-50/50 border-t border-amber-100">
+            <div class="flex justify-between text-lg font-bold mb-6 text-amber-900">
+                <span>Total Amount</span>
+                <span id="cart-total">₹0</span>
+            </div>
+            <button onclick="showCheckout()" class="w-full bg-amber-600 text-white py-4 rounded-2xl font-bold hover:bg-amber-700 transition-all active:scale-95 shadow-lg shadow-amber-200">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-300">
+            <h2 class="text-2xl font-bold text-amber-900 mb-2 text-center">Checkout Details</h2>
+            <p class="text-gray-400 text-sm text-center mb-8">Enter your details to finalize your order.</p>
+            
+            <form id="checkout-form" onsubmit="handleOrder(event)" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase ml-2">Full Name</label>
+                    <input type="text" placeholder="e.g. Rahul Sharma" required class="w-full border-2 border-amber-50 p-3 rounded-xl focus:border-amber-400 outline-none transition bg-gray-50/50">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase ml-2">Email Address</label>
+                    <input type="email" placeholder="rahul@example.com" required class="w-full border-2 border-amber-50 p-3 rounded-xl focus:border-amber-400 outline-none transition bg-gray-50/50">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase ml-2">Shipping Address</label>
+                    <input type="text" placeholder="123 Teddy Lane, Mumbai" required class="w-full border-2 border-amber-50 p-3 rounded-xl focus:border-amber-400 outline-none transition bg-gray-50/50">
+                </div>
+                
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-amber-600 text-white py-4 rounded-2xl font-bold hover:bg-amber-700 transition shadow-md active:scale-95">
+                        Place My Order
+                    </button>
+                    <button type="button" onclick="closeCheckout()" class="w-full text-gray-400 text-sm font-bold mt-4 hover:text-gray-600 transition">Back to Store</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Updated Product List with Rupee Pricing
+        const products = [
+            { id: 1, name: "Classic Brown Bear", price: 1299, img: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?q=80&w=800" },
+            { id: 2, name: "Honey Cream Bear", price: 1599, img: "assets/images/honey.png" },
+            { id: 3, name: "Panda Cuddle Friend", price: 1999, img: "assets/images/panda.png" },
+            { id: 4, name: "Velvet Pink Bear", price: 1499, img: "assets/images/pink.png" },
+            { id: 5, name: "Button Nose Teddy", price: 999, img: "assets/images/button.png" },
+            { id: 6, name: "Snow White Bear", price: 1799, img: "assets/images/snow.png" }
+        ];
+
+        let cart = [];
+
+        // 1. Initial Render
+        const productGrid = document.getElementById('product-grid');
+        products.forEach(product => {
+            productGrid.innerHTML += `
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-orange-50 overflow-hidden hover:shadow-2xl transition-all duration-500 product-card group">
+                    <div class="overflow-hidden bg-gray-100">
+                        <img src="${product.img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Bear+Coming+Soon'">
+                    </div>
+                    <div class="p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">${product.name}</h3>
+                            <p class="text-amber-700 font-bold text-lg">₹${product.price.toLocaleString('en-IN')}</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Select Cuddle Size</label>
+                            <select id="size-${product.id}" class="w-full border-b-2 border-gray-100 py-2 focus:border-amber-500 outline-none text-sm font-bold bg-transparent cursor-pointer">
+                                <option value="Small">Small (12") - Standard</option>
+                                <option value="Medium">Medium (18") + ₹300</option>
+                                <option value="Large">Large (24") + ₹700</option>
+                            </select>
+                        </div>
+
+                        <button onclick="addToCart(${product.id})" class="w-full bg-amber-500 text-white py-4 rounded-2xl font-bold hover:bg-amber-600 transition shadow-md active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus text-xs"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 2. Cart Logic
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const size = document.getElementById(`size-${productId}`).value;
+            
+            let finalPrice = product.price;
+            if(size === "Medium") finalPrice += 300;
+            if(size === "Large") finalPrice += 700;
+
+            cart.push({
+                cartId: Date.now(),
+                name: product.name,
+                price: finalPrice,
+                size: size,
+                img: product.img
+            });
+            
+            updateUI();
+            toggleCart(true); 
+        }
+
+        function updateUI() {
+            const cartContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartCount.innerText = cart.length;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="text-center py-20 text-gray-300">
+                        <i class="fa-solid fa-shopping-bag text-6xl mb-4 opacity-10"></i>
+                        <p class="font-medium">Your basket is empty</p>
+                    </div>`;
+                cartTotal.innerText = '₹0';
+                return;
+            }
+
+            cartContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartContainer.innerHTML += `
+                    <div class="flex items-center gap-4 bg-gray-50/80 p-4 rounded-2xl border border-gray-100 transition animate-in slide-in-from-right-4">
+                        <img src="${item.img}" class="w-16 h-16 object-cover rounded-xl shadow-sm" onerror="this.src='https://via.placeholder.com/100'">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm text-gray-800">${item.name}</h4>
+                            <p class="text-[10px] text-amber-600 font-black uppercase tracking-tighter">${item.size}</p>
+                            <p class="font-bold text-gray-700 text-sm mt-0.5">₹${item.price.toLocaleString('en-IN')}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-gray-300 hover:text-red-500 transition p-2">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            cartTotal.innerText = `₹${total.toLocaleString('en-IN')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateUI();
+        }
+
+        // 3. Navigation/Modal Toggles
+        function toggleCart(forceOpen = false) {
+            const sidebar = document.getElementById('cart-sidebar');
+            if (forceOpen) sidebar.classList.remove('cart-hidden');
+            else sidebar.classList.toggle('cart-hidden');
+        }
+
+        function showCheckout() {
+            if(cart.length === 0) return alert("Please add a bear to your cart first!");
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // 4. Final Checkout Action
+        function handleOrder(e) {
+            e.preventDefault();
+            alert("🧸 Order Success! Your new teddy friends are being packed with care and will arrive soon.");
+            cart = [];
+            updateUI();
+            closeCheckout();
+            toggleCart();
+        }
+    </script>
+</body>
+</html>
